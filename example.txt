@@ -1,0 +1,5 @@
+python compute_iou.py --data_dir ./data \
+    --sessions xIYH05-gravity-USA-vin116-20250828_221259 \
+    --cameras FNC \
+    --frames 1 \
+    --detailed

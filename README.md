@@ -119,6 +119,48 @@ python convert_calib.py consolidate \
 
 ---
 
+### `lucid_to_kitti.py` - Lucid JSON to KITTI Format Converter
+
+Converts Lucid's JSON calibration format to KITTI .txt format for use with `compute_iou.py`.
+
+**Usage:**
+
+```bash
+# Basic conversion (automatically inverts extrinsic for OPTICAL coordinate system)
+python lucid_to_kitti.py --input lucid_calib.json --output calib.txt
+
+# Don't invert extrinsic (if already in lidar-to-camera format)
+python lucid_to_kitti.py --input lucid_calib.json --output calib.txt --no-invert
+
+# Quiet mode
+python lucid_to_kitti.py -i lucid_calib.json -o calib.txt -q
+```
+
+**Input format (Lucid JSON):**
+```json
+{
+  "intrinsic_params": {
+    "fx": 4567.32, "fy": 4566.75, "cx": 1915.45, "cy": 1103.16,
+    "camera": "fnc_c"
+  },
+  "extrinsic_params": {
+    "px": 2.457, "py": -0.008, "pz": -0.525,
+    "quaternion": { "x": -0.497, "y": 0.500, "z": -0.502, "w": 0.501 },
+    "camera_coordinate": "OPTICAL"
+  }
+}
+```
+
+**Output format (KITTI .txt):**
+```
+P0: fx 0 cx 0 0 fy cy 0 0 0 1 0
+Tr_velo_to_cam: r11 r12 r13 t1 r21 r22 r23 t2 r31 r32 r33 t3
+```
+
+**Note:** Lucid's `"camera_coordinate": "OPTICAL"` means the extrinsic is camera-to-world. The script automatically inverts it to get lidar-to-camera for KITTI format.
+
+---
+
 ## Existing Lucid Production Scripts
 
 These scripts are from Lucid's production environment for reference:
